@@ -14,11 +14,12 @@ except ModuleNotFoundError:
     exit()
 
 SLEEP_TIME = 1.0
-VERSION = "1.3"
+VERSION = "1.4"
 
 def the_argparse(language=English):
         parser = argparse.ArgumentParser(usage="torghostng [-h] -s|-x|-id|-r|-m|-c|-l|--list")
         parser._optionals.title = language.options
+        parser.add_argument("-p","--privoxy", help=language.privoxy_help, action="store_true")
         parser.add_argument("-s","--start", help=language.start_help, action="store_true")
         parser.add_argument("-x", "--stop", help=language.stop_help, action="store_true")
         parser.add_argument("-r", "--renew", help=language.circuit_help, action="store_true")
@@ -52,6 +53,7 @@ else:
 Torrc = '/etc/tor/torngrc'
 resolv = '/etc/resolv.conf'
 Sysctl = '/etc/sysctl.conf'
+Privoxy = '/etc/privoxy/config'
 
 TOR_UID = getoutput('id -ur {}'.format(TOR_USER))
 
@@ -64,6 +66,8 @@ DISABLE_IPv6 = """net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1"""
 
 resolvConfig = 'nameserver 127.0.0.1'
+
+privoxy_conf = 'forward-socks5 / 127.0.0.1:9040 .'
 
 TorrcConfig = """VirtualAddrNetwork 10.0.0.0/10
 AutomapHostsOnResolve 1
@@ -118,15 +122,25 @@ iptables -t mangle -F
 iptables -F
 iptables -X"""
 
+set_proxy="""export https_proxy=127.0.0.1:8118
+export http_proxy=127.0.0.1:8118
+export socks5_proxy=127.0.0.1:9040"""
+
+rm_proxy="""export https_proxy=
+export http_proxy=
+export socks5_proxy="""
+
 update_commands = """cd ~ && rm -rf TorghostNG
 git clone https://github.com/gitkern3l/TorghostNG
 cd TorghostNG
 sudo python3 install.py && sudo python3 install.py"""
 
+
 def banner():
     print(the_banner)
     print(language.description)
-    
+
+
 def check_lang():
     try:
         if path.isfile(LANGCONF) == True:
@@ -152,6 +166,7 @@ def check_lang():
     except FileNotFoundError:
         print("TorghostNG is lacking its needed files. Reinstall TorghostNG from Github pls")
         exit()
+
 
 def choose_lang(language=English):
     try:
@@ -191,6 +206,7 @@ def check_windows_check_root():
         print(language.root_please)
         exit()
 
+
 def check_update():
     try:
         print(language.checking_update, end='', flush=True)
@@ -214,6 +230,7 @@ def check_update():
         print()
         exit()
 
+
 def check_tor(status):
     try:
         print(language.checking_tor, end='', flush=True)
@@ -230,7 +247,11 @@ def check_tor(status):
                 print(language.tor_disconnected)
             
         else:
-            print(language.tor_success)
+            if 'LISTEN' in getoutput('netstat -atnp | grep privoxy'):
+                print(language.tor_success.format('Privoxy'))
+                
+            else:
+                print(language.tor_success.format(''))
 
         check_ip()
 
@@ -242,7 +263,8 @@ def check_tor(status):
         print()
         sleep(1)
         check_tor(status)
-            
+
+
 def check_ip():
     try:
         print(language.checking_ip, end='', flush=True)
@@ -260,7 +282,8 @@ def check_ip():
         print()
         exit()
 
-def start_connecting(id=None):
+
+def start_connecting(id=None,privoxy=None):
     try:
         print(icon.process + ' ' + language.start_help)
         
@@ -271,7 +294,7 @@ def start_connecting(id=None):
         else:
             print(language.disable_ipv6_info)
 
-            system('sudo cp {} /etc/sysctl.conf.backup'.format(Sysctl))
+            system('sudo cp {0} {0}.backup'.format(Sysctl))
             print(language.disabling_ipv6, end='', flush=True)
             
             with open(Sysctl, mode='w') as file_sysctl:
@@ -305,26 +328,48 @@ def start_connecting(id=None):
             print(language.done)
 
         # Configure DNS resolv.conf
-        if resolvConfig == open(resolv).read():
-            print(language.already_configured.format('DNS resolv.conf'))
-            
-        else:
-            system("cp {} /etc/resolv.conf.backup".format(resolv))
+        if privoxy == None:
+            system('systemctl stop privoxy')
+            if resolvConfig == open(resolv).read():
+                print(language.already_configured.format('DNS resolv.conf'))
+                
+            else:
+                system("cp {0} {0}.backup".format(resolv))
+                
+                with open(resolv, mode='w') as resolv_file:
+                    print(language.configuring.format('DNS resolv.conf'), end='', flush=True)
+                    resolv_file.write(resolvConfig)
+                    resolv_file.close()
+                    sleep(SLEEP_TIME)
+                    print(language.done)
 
-            with open(resolv, mode='w') as file_resolv:
-                print(language.configuring.format('DNS resolv.conf'), end='', flush=True)
-                file_resolv.write(resolvConfig)
-                file_resolv.close()
-                sleep(SLEEP_TIME)
-                print(language.done)
-
-        # Stop and start new tor service
+        # Stop tor service
         print(language.stopping_tor, end='', flush=True)
         system('systemctl stop tor')
         system('fuser -k 9051/tcp > /dev/null 2>&1')
         sleep(SLEEP_TIME)
         print(language.done)
-        
+
+        # Configure and start Privoxy
+        if privoxy == True:
+            system(set_proxy)
+            
+            if privoxy_conf == open(Privoxy).read():
+                print(language.already_configured.format('Privoxy'))
+                
+            else:
+                system('cp {0} {0}.backup'.format(Privoxy))
+                
+                with open(Privoxy, mode='w') as privoxy_file:
+                    print(language.configuring.format('Privoxy'), end='', flush=True)
+                    privoxy_file.write(privoxy_conf)
+                    privoxy_file.close()
+                    sleep(SLEEP_TIME)
+                    print(language.done)
+                    
+            system('systemctl start privoxy')
+
+        # Start new tor service
         print(language.starting_tor, end='', flush=True)
         system('sudo -u {0} tor -f {1} > /dev/null'.format(TOR_USER, Torrc))
         sleep(SLEEP_TIME)
@@ -348,24 +393,38 @@ def start_connecting(id=None):
         print()
         exit()
 
+
 def stop_connecting():
     try:
         print(icon.process + ' ' + language.stop_help)
+        
+        # Restore Privoxy configuration
+        if 'LISTEN' in getoutput('netstat -atnp | grep privoxy'):
+            print(language.restoring_configuration.format('Privoxy'), end='', flush=True)
+            
+            if path.isfile(Privoxy + '.backup')  == True:
+                system('mv {0}.backup {0}'.format(Privoxy))
+            
+            system('systemctl stop privoxy')
+            system(rm_proxy)
+            
+            sleep(SLEEP_TIME)
+            print(language.done)
 
         # Restore DNS resolv.conf configuration
-        if path.isfile('/etc/resolv.conf.backup') == True:
+        if path.isfile(resolv + '.backup') == True:
             print(language.restoring_configuration.format('DNS resolv.conf'), end='', flush=True)
 
-            system('mv /etc/resolv.conf.backup {}'.format(resolv))
+            system('mv {0}.backup {0}'.format(resolv))
 
             sleep(SLEEP_TIME)
             print(language.done)
 
         # Restore IPv6 configuration
-        if path.isfile('/etc/sysctl.conf.backup') == True:
+        if path.isfile(Sysctl + '.backup') == True:
             print(language.restoring_configuration.format('IPv6'), end='', flush=True)
 
-            system('mv /etc/sysctl.conf.backup {}'.format(Sysctl))
+            system('mv {0}.backup {0}'.format(Sysctl))
             system('sudo sysctl -p')
 
             sleep(SLEEP_TIME)
@@ -392,6 +451,7 @@ def stop_connecting():
         print()
         exit()
 
+
 def change_tor_circuit():
     try:
         print(language.changing_tor_circuit, end='', flush=True)
@@ -411,6 +471,7 @@ def change_tor_circuit():
     except KeyboardInterrupt:
         print()
         exit()
+
 
 def changemac(interface):
     try:
@@ -432,6 +493,7 @@ def changemac(interface):
         print()
         exit()
 
+
 def fix_dns():
     try:
         print(language.fixing_dns, end='', flush=True)
@@ -446,6 +508,7 @@ def fix_dns():
     except KeyboardInterrupt:
         print()
         exit()
+
 
 if __name__ == "__main__":
     language = check_lang()
@@ -470,8 +533,13 @@ if __name__ == "__main__":
     your_interface = args.mac
     if your_interface != None: changemac(your_interface)
 
-    if args.start == True:
-        start_connecting()
+    if (args.start == True) or (args.privoxy == True):
+        if args.privoxy == True:
+            start_connecting(None, True)
+            
+        else:
+            start_connecting()
+
         exit()
 
     if args.stop == True:
@@ -480,7 +548,11 @@ if __name__ == "__main__":
         
     the_id = args.id
     if the_id:
-        start_connecting(the_id)
+        if args.privoxy == True:
+            start_connecting(the_id, True)
+        else:
+            start_connecting(the_id)
+
         exit()
         
     if args.renew == True: change_tor_circuit()
