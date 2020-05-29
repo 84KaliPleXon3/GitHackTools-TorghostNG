@@ -127,7 +127,6 @@ elif path.isfile('/usr/bin/xbps-install') == True:
     INSTALL_PACKAGES = "xbps-install -S "
         
 elif path.isfile('/usr/bin/upgradepkg') == True:
-    UPDATE_REPOSITORY = "wget https://slack.conraid.net/repository/slackware64-current"
     INSTALL_PACKAGES = "upgradepkg --install-new "
 
 else:
@@ -147,16 +146,20 @@ def install_package(package):
                 print(language.downloading.format(package))
 
                 if package == 'tor':
-                    system(UPDATE_REPOSITORY + 'tor/tor-0.4.2.7-x86_64-1cf.txz')
+                    system('wget https://slack.conraid.net/repository/slackware64-current/tor/tor-0.4.2.7-x86_64-1cf.txz')
                     system(INSTALL_PACKAGES + 'tor-0.4.2.7-x86_64-1cf.txz')
                     
                 elif package == 'macchanger':
-                    system(UPDATE_REPOSITORY + 'macchanger/macchanger-1.7.0-x86_64-5cf.txz')
+                    system('wget https://slack.conraid.net/repository/slackware64-current/macchanger/macchanger-1.7.0-x86_64-5cf.txz')
                     system(INSTALL_PACKAGES + 'macchanger-1.7.0-x86_64-5cf.txz')
                     
                 elif package == 'pip3':
                     system('wget https://packages.slackonly.com/pub/packages/14.1-x86_64/python/python3/python3-3.5.1-x86_64-1_slack.txz')
                     system(INSTALL_PACKAGES + 'python3-3.5.1-x86_64-1_slack.txz')
+                    
+                elif package == 'privoxy':
+                    system('wget https://packages.slackonly.com/pub/packages/14.2-x86_64/network/privoxy/privoxy-3.0.28-x86_64-1_slonly.txz')
+                    system(INSTALL_PACKAGES + 'privoxy-3.0.28-x86_64-1_slonly.txz')
                 
             else:
                 if package == 'pip3':
@@ -208,7 +211,7 @@ def pyinstaller():
         exit()
 
 
-packages = ['tor','macchanger','pip3']
+packages = ['tor','macchanger','privoxy','pip3']
 for package in packages:
     install_package(package)
 
