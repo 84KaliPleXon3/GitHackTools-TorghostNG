@@ -16,7 +16,7 @@ You can read how to use Privoxy together with Tor at [Privoxy FAQ](https://privo
 # What is Privoxy?
 > Privoxy is a non-caching web proxy with advanced filtering capabilities for enhancing privacy, modifying web page data and HTTP headers, controlling access, and removing ads and other obnoxious Internet junk. Privoxy has a flexible configuration and can be customized to suit individual needs and tastes. It has application for both stand-alone systems and multi-user networks.
 
-You can find more about Privoxy at [Privoxy Home Page](https://privoxy.org)
+You can find more about Privoxy at [Privoxy Home Page](https://privoxy.org).
 
 > If you want to hide your IP address from most adversaries, you should consider chaining Privoxy with Tor. The configuration details can be found in [How do I use Privoxy together with Tor](https://wwwprivoxy.org/faq/misc.html#TOR) section just below.
 
