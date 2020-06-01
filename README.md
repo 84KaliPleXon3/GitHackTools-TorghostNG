@@ -1,4 +1,6 @@
 # About TorghostNG
+![TorghostNG now supports Privoxy](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20%20Privoxy.png)
+
 TorghostNG is a tool that make all your internet traffic anonymized through Tor network.
 
 Rewritten from [TorGhost](https://github.com/SusmithKrishnan/torghost) with Python 3.
@@ -8,10 +10,8 @@ TorghostNG was tested on:
 * Manjaro
 * ...
 
-# What's new in TorghostNG 1.4
-* Support connecting to Tor with Privoxy
-You can read how to use Privoxy together with Tor at [Privoxy FAQ](https://privoxy.org/faq/misc.html#TOR)
-![TorghostNG now supports Privoxy](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20%20Privoxy.png)
+# What's new in TorghostNG 1.5
+* TorghostNG 1.4 is very buggy so version 1.5 is here to fix it :smile:
 
 # What is Privoxy?
 > Privoxy is a non-caching web proxy with advanced filtering capabilities for enhancing privacy, modifying web page data and HTTP headers, controlling access, and removing ads and other obnoxious Internet junk. Privoxy has a flexible configuration and can be customized to suit individual needs and tastes. It has application for both stand-alone systems and multi-user networks.
@@ -93,8 +93,13 @@ It's recommended that you should use [NoScript](https://noscript.net) before bef
 ![Don't torrent over Tor, please](https://github.com/GitHackTools/Store-the-pictures/raw/master/Don't%20torrent%20over%20Tor.png)
 
 # Changes log
+Version 1.5
+* Fix bugs of version 1.4
+
 Version 1.4
 * Support connecting to Tor with Privoxy
+
+You can read how to use Privoxy together with Tor at [Privoxy FAQ](https://privoxy.org/faq/misc.html#TOR)
 
 Version 1.2
 * Fix `update_commands` and others in [torghostng.py](https://github.com/gitkern3l/TorghostNG/blob/master/torghostng.py)
