@@ -67,7 +67,9 @@ net.ipv6.conf.default.disable_ipv6 = 1"""
 
 resolvConfig = 'nameserver 127.0.0.1'
 
-privoxy_conf = 'forward-socks5 / 127.0.0.1:9040 .'
+privoxy_conf = """forward-socks5 / 127.0.0.1:9040 .
+forward-socks4 / 127.0.0.1:9040 .
+forward-socks4a / 127.0.0.1:9040 ."""
 
 TorrcConfig = """VirtualAddrNetwork 10.0.0.0/10
 AutomapHostsOnResolve 1
@@ -124,11 +126,15 @@ iptables -X"""
 
 set_proxy="""export https_proxy=127.0.0.1:8118
 export http_proxy=127.0.0.1:8118
-export socks5_proxy=127.0.0.1:9040"""
+export socks5_proxy=127.0.0.1:9040
+export socks4_proxy=127.0.0.1:9040
+export socks4a_proxy=127.0.0.1:9040"""
 
 rm_proxy="""export https_proxy=
 export http_proxy=
-export socks5_proxy="""
+export socks5_proxy=
+export socks4_proxy=
+export socks4a_proxy="""
 
 update_commands = """cd ~ && rm -rf TorghostNG
 git clone https://github.com/gitkern3l/TorghostNG
