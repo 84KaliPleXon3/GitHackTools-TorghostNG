@@ -67,7 +67,8 @@ net.ipv6.conf.default.disable_ipv6 = 1"""
 
 resolvConfig = 'nameserver 127.0.0.1'
 
-privoxy_conf = """forward-socks5 / 127.0.0.1:9040 .
+privoxy_conf = """listen-address 127.0.0.1:8118
+forward-socks5 / 127.0.0.1:9040 .
 forward-socks4 / 127.0.0.1:9040 .
 forward-socks4a / 127.0.0.1:9040 ."""
 
