@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     exit()
 
 SLEEP_TIME = 1.0
-VERSION = "1.4"
+VERSION = "1.5"
 
 def the_argparse(language=English):
         parser = argparse.ArgumentParser(usage="torghostng [-h] -s|-x|-id|-r|-m|-c|-l|--list")
