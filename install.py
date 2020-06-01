@@ -211,7 +211,7 @@ def pyinstaller():
         exit()
 
 
-packages = ['tor','macchanger','privoxy','pip3']
+packages = ['tor','macchanger','privoxy', 'netstat-nat','pip3']
 for package in packages:
     install_package(package)
 
