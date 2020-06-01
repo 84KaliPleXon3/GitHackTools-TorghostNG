@@ -113,7 +113,23 @@ Version 1.1
 * Block BitTorrent traffic
 * Auto disable IPv6 before connecting to Tor
 
-# Screenshots of Torghost (Version 1.0)
+# Screenshots of Torghost (Version 1.0 and 1.5)
+* Connecting to Tor with Privoxy
+
+![Connecting to Tor with Privoxy - TorghostNG](https://github.com/GitHackTools/Store-the-pictures/blob/master/Connecting%20to%20Tor%20with%20Privoxy%20-%20TorghostNG.png)
+
+* Connecting to TOR exitnode in US with Privoxy
+
+![Connecting to TOR exitnode in US with Privoxy](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20connecting%20to%20TOR%20exitnode%20in%20US%20with%20Privoxy.png)
+
+* Checking Tor Privoxy connection
+
+![Checking Tor Privoxy connection](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20checking%20Tor%20Privoxy%20connection.png)
+
+* Disconnecting from Tor and Privoxy
+
+![Disconnecting from Tor and Privoxy](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20disconnecting%20from%20Tor%20and%20Privoxy.png)
+
 * Changing MAC address: `torghostng -m INTERFACE`
 
 ![Changing MAC address with TorghostNG](https://github.com/GitHackTools/Store-the-pictures/raw/master/TorghostNG%20changing%20MAC%20address.png)
