@@ -8,11 +8,19 @@ TorghostNG was tested on:
 * Manjaro
 * ...
 
-# What's new in TorghostNG 1.2
-* Fixed `update_commands` and others in [`torghostng.py`](https://github.com/gitkern3l/TorghostNG/blob/master/torghostng.py)
-* Changed a few things in [`theme.py`](https://github.com/gitkern3l/TorghostNG/blob/master/torngconf/theme.py)
-* Changed a few things in [`install.py`](https://github.com/gitkern3l/TorghostNG/blob/master/install.py)
-* Now you can change Tor circuit with `-r`
+# What's new in TorghostNG 1.4
+* Support connecting to Tor with Privoxy
+You can read how to use Privoxy together with Tor at [Privoxy FAQ](https://privoxy.org/faq/misc.html#TOR)
+![TorghostNG now supports Privoxy](https://github.com/GitHackTools/Store-the-pictures/blob/master/TorghostNG%20%20Privoxy.png)
+
+# What is Privoxy?
+> Privoxy is a non-caching web proxy with advanced filtering capabilities for enhancing privacy, modifying web page data and HTTP headers, controlling access, and removing ads and other obnoxious Internet junk. Privoxy has a flexible configuration and can be customized to suit individual needs and tastes. It has application for both stand-alone systems and multi-user networks.
+
+You can find more about Privoxy at [Privoxy Home Page](https://privoxy.org)
+
+> If you want to hide your IP address from most adversaries, you should consider chaining Privoxy with Tor. The configuration details can be found in [How do I use Privoxy together with Tor](https://wwwprivoxy.org/faq/misc.html#TOR) section just below.
+
+From [Privoxy FAQ 4.7](https://privoxy.org/faq/misc.html).
 
 # Before you use TorghostNG
 * For the goodness of Tor network, BitTorrent traffic will be blocked by iptables. Although you can bypass it with some tweaks with your torrent client 😥. It's difficult to completely block all torrent traffic.
@@ -85,6 +93,9 @@ It's recommended that you should use [NoScript](https://noscript.net) before bef
 ![Don't torrent over Tor, please](https://github.com/GitHackTools/Store-the-pictures/raw/master/Don't%20torrent%20over%20Tor.png)
 
 # Changes log
+Version 1.4
+* Support connecting to Tor with Privoxy
+
 Version 1.2
 * Fix `update_commands` and others in [torghostng.py](https://github.com/gitkern3l/TorghostNG/blob/master/torghostng.py)
 * Chang a few things in [`theme.py`](https://github.com/gitkern3l/TorghostNG/blob/master/torngconf/theme.py)
