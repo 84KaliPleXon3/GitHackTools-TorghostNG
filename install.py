@@ -160,13 +160,17 @@ def install_package(package):
                 elif package == 'privoxy':
                     system('wget https://packages.slackonly.com/pub/packages/14.2-x86_64/network/privoxy/privoxy-3.0.28-x86_64-1_slonly.txz')
                     system(INSTALL_PACKAGES + 'privoxy-3.0.28-x86_64-1_slonly.txz')
+                    
+                elif package == 'netstat':
+                    system('wget http://slackware.cs.utah.edu/pub/slackware/slackware64-current/slackware64/n/net-tools-20181103_0eebece-x86_64-1.txz')
+                    system(INSTALL_PACKAGES + 'net-tools-20181103_0eebece-x86_64-1.txz')
                 
             else:
                 if package == 'pip3':
                     package = 'python3-pip'
-                    
-                    if path.isfile('/usr/bin/pacman') == True:
-                        package = 'python-pip'
+                    if path.isfile('/usr/bin/pacman') == True: package = 'python-pip'
+                        
+                elif package == 'netstat': package = 'net-tools'
 
                 system(INSTALL_PACKAGES + package)
 
@@ -211,7 +215,7 @@ def pyinstaller():
         exit()
 
 
-packages = ['tor','macchanger','privoxy', 'netstat-nat','pip3']
+packages = ['tor','macchanger','privoxy','netstat','pip3']
 for package in packages:
     install_package(package)
 
